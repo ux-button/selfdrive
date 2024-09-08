@@ -1,0 +1,3 @@
+const RootPage = () => {};
+
+export { RootPage };
