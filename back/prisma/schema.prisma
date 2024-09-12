@@ -14,10 +14,35 @@ datasource db {
 }
 
 model Session {
-  id String @id @default(uuid()) @db.Uuid
-  sid String @unique
-  data String
+  id        String    @id @default(uuid()) @db.Uuid
+  sid       String    @unique
+  data      String
   expiresAt DateTime?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model User {
+  id       String   @id @default(uuid())
+  username String   @unique
+  password String
+  Folder   Folder[]
+  File     File[]
+}
+
+model Folder {
+  id      String @id @default(uuid())
+  name    String
+  root    String
+  owner   User   @relation(fields: [ownerId], references: [id])
+  ownerId String @unique
+}
+
+model File {
+  id      String @id @default(uuid())
+  name    String
+  root    String
+  size    Float
+  owner   User   @relation(fields: [ownerId], references: [id])
+  ownerId String @unique
 }
