@@ -3,8 +3,8 @@ const prisma = new PrismaClient();
 
 const bcrypt = require("bcryptjs");
 
-// Request to database
-const databaseSync = async (username, password) => {
+// Query to database
+const queryDataBase = async (username, password) => {
   await prisma.user.create({
     data: {
       username,
@@ -35,7 +35,8 @@ const signUpController = async (req, res) => {
       return res.status(400).json("Something went wrong with password");
     }
 
-    databaseSync(username, hashedPassword)
+    // Call database query
+    queryDataBase(username, hashedPassword)
       .then(async () => {
         await prisma.$disconnect();
         return res.status(201).json({ message: `Account ${username} created` });

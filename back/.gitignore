@@ -1,7 +1,4 @@
+node_modules
+
 *.env
 dotenv
-
-node_modules
-dist
-dist-ssr
-*.local
