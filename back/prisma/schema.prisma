@@ -26,14 +26,14 @@ model User {
   id       String   @id @default(uuid())
   username String   @unique
   password String
-  Folder   Folder[]
-  File     File[]
+  folder   Folder[]
+  file     File[]
 }
 
 model Folder {
   id      String @id @default(uuid())
   name    String
-  root    String
+  root    String?
   owner   User   @relation(fields: [ownerId], references: [id])
   ownerId String @unique
 }
