@@ -1,10 +1,12 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import "./index.css";
 import { RootPage } from "./pages/RootPage.jsx";
 import { SignUpPage } from "./pages/SignUpPage.jsx";
 import { LogInPage } from "./pages/LogInPage.jsx";
+import { Context } from "./Context.jsx";
+
+import "./index.css";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +25,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <Context>
+      <RouterProvider router={router} />
+    </Context>
   </StrictMode>
 );

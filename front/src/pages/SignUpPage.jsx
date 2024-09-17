@@ -1,11 +1,15 @@
 import { Input } from "../components/Input";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/Button";
 import { ErrorMessage } from "../components/ErrorMessage";
 import axios from "axios";
+import { DataContext } from "../Context";
+import { useCheckAuth } from "../features/useCheckAuth";
 
 const SignUpPage = () => {
+  const [state, dispatch] = useContext(DataContext);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -14,6 +18,8 @@ const SignUpPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
+
+  useCheckAuth();
 
   const handleUsername = (value) => {
     setUsername(value);

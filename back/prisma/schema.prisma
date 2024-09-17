@@ -5,7 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "darwin"]
 }
 
 datasource db {
@@ -14,12 +15,10 @@ datasource db {
 }
 
 model Session {
-  id        String    @id @default(uuid()) @db.Uuid
-  sid       String    @unique
+  id        String   @id @default(uuid())
+  sid       String   @unique
   data      String
-  expiresAt DateTime?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  expiresAt DateTime
 }
 
 model User {
@@ -31,11 +30,11 @@ model User {
 }
 
 model Folder {
-  id      String @id @default(uuid())
+  id      String  @id @default(uuid())
   name    String
   root    String?
-  owner   User   @relation(fields: [ownerId], references: [id])
-  ownerId String @unique
+  owner   User    @relation(fields: [ownerId], references: [id])
+  ownerId String  @unique
 }
 
 model File {

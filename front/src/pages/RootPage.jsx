@@ -1,9 +1,22 @@
 import { ItemGrid } from "../components/ItemGrid";
 import { testData } from "../testData";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { DataContext } from "../Context";
+import axios from "axios";
+import { useCheckAuth } from "../features/useCheckAuth";
 
 const RootPage = () => {
+  const [state, dispatch] = useContext(DataContext);
+
   const [storage, setStorage] = useState(testData);
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const { isAuthenticated } = useCheckAuth();
+
+  if (!isAuthenticated) {
+    return <div>Have not logged in</div>;
+  }
 
   return (
     <>

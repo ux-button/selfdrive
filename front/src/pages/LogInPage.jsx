@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { ErrorMessage } from "../components/ErrorMessage";
-import axios from "axios";
+import { DataContext } from "../Context";
+import { useCheckAuth } from "../features/useCheckAuth";
 
 const LogInPage = () => {
+  const [state, dispatch] = useContext(DataContext);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -14,6 +18,8 @@ const LogInPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
+
+  const { isAuthenticated } = useCheckAuth();
 
   const handleUsername = (value) => {
     setUsername(value);
@@ -25,7 +31,13 @@ const LogInPage = () => {
 
   const handleSubmit = async () => {
     try {
-      await axios.post("http://localhost:5123/log-in", { username, password });
+      await axios.post(
+        "http://localhost:5123/log-in",
+        { username, password },
+        {
+          withCredentials: true,
+        }
+      );
       navigate("/");
     } catch (err) {
       setIsError(true);
@@ -34,6 +46,10 @@ const LogInPage = () => {
       return setErrorMessage(err.response.data.error);
     }
   };
+
+  if (isAuthenticated) {
+    navigate("/");
+  }
 
   return (
     <div className="h-full w-full flex justify-center items-center p-8 space-y-4">
