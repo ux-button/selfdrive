@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import axios from "axios";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { DataContext } from "../Context";
-import { useCheckAuth } from "../features/useCheckAuth";
+import { useCheckAuth } from "../hooks/useCheckAuth";
 
 const LogInPage = () => {
   const [state, dispatch] = useContext(DataContext);
@@ -17,9 +17,7 @@ const LogInPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const navigate = useNavigate();
-
-  const { isAuthenticated } = useCheckAuth();
+  useCheckAuth();
 
   const handleUsername = (value) => {
     setUsername(value);
@@ -47,8 +45,8 @@ const LogInPage = () => {
     }
   };
 
-  if (isAuthenticated) {
-    navigate("/");
+  if (state.isAuthenticated) {
+    return <Navigate to="/" />;
   }
 
   return (

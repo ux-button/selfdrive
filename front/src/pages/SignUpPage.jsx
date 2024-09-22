@@ -5,7 +5,7 @@ import { Button } from "../components/Button";
 import { ErrorMessage } from "../components/ErrorMessage";
 import axios from "axios";
 import { DataContext } from "../Context";
-import { useCheckAuth } from "../features/useCheckAuth";
+import { useCheckAuth } from "../hooks/useCheckAuth";
 
 const SignUpPage = () => {
   const [state, dispatch] = useContext(DataContext);

@@ -5,9 +5,17 @@ const reducer = (state, action) => {
     case "authorize":
       return {
         ...state,
-        isAuthenticated: action.payload.isAuthenticated,
+        isAuthenticated: true,
         user: action.payload.user,
         username: action.payload.username,
+      };
+      break;
+    case "unauthorize":
+      return {
+        ...state,
+        isAuthenticated: false,
+        user: null,
+        username: null,
       };
   }
 };

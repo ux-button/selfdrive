@@ -34,7 +34,7 @@ model Folder {
   name    String
   root    String?
   owner   User    @relation(fields: [ownerId], references: [id])
-  ownerId String  @unique
+  ownerId String
 }
 
 model File {
@@ -43,5 +43,5 @@ model File {
   root    String
   size    Float
   owner   User   @relation(fields: [ownerId], references: [id])
-  ownerId String @unique
+  ownerId String
 }
