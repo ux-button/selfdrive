@@ -1,5 +1,3 @@
-const getFilesController = (req, res, next) => {
-  res.status(200).end();
-};
+const getFilesController = (req, res, next) => {};
 
 module.exports = { getFilesController };

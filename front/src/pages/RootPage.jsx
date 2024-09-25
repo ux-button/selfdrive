@@ -96,7 +96,7 @@ const RootPage = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5123/api/upload",
+        "http://localhost:5123/api/files",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } },
         { withCredentials: true }
