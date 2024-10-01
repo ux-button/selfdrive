@@ -42,6 +42,7 @@ model File {
   name    String
   root    String
   size    Float
+  link    String
   owner   User   @relation(fields: [ownerId], references: [id])
   ownerId String
 }

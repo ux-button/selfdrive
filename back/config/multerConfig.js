@@ -1,6 +1,6 @@
 const multer = require("multer");
 
-// Set up the storage destination and filename for uploaded files
+// Set up the storage in memory
 const storage = multer.memoryStorage();
 
 // Initialize multer with the storage configuration

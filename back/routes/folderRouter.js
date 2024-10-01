@@ -8,7 +8,7 @@ const {
 } = require("../controllers/setNewFolderController");
 
 // Endpoints
-folderRouter.get("/*", getFolders);
 folderRouter.post("/", setNewFolderController);
+folderRouter.get("/*", getFolders);
 
 module.exports = { folderRouter };

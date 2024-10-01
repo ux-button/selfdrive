@@ -1,4 +1,4 @@
-const defaultData = { isAuthenticated: false, user: null, username: null };
+const defaultData = { isAuthenticated: false, username: null };
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -6,7 +6,6 @@ const reducer = (state, action) => {
       return {
         ...state,
         isAuthenticated: true,
-        user: action.payload.user,
         username: action.payload.username,
       };
       break;
@@ -14,7 +13,6 @@ const reducer = (state, action) => {
       return {
         ...state,
         isAuthenticated: false,
-        user: null,
         username: null,
       };
   }

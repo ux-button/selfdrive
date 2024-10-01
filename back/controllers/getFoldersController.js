@@ -14,10 +14,10 @@ const getFolders = (req, res) => {
   // TO DO: Check root existanse first
   const path = req.params;
 
-  let rootFolder = null;
+  // Replace null and prepare altered path
+  let rootFolder = "/";
   if (path[0]) {
-    rootFolder = path[0].split("/");
-    rootFolder = rootFolder[rootFolder.length - 1];
+    rootFolder = rootFolder + path[0].replaceAll(" ", "%20");
   }
 
   getFoldersByFolder(rootFolder, req.user.id)

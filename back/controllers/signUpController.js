@@ -31,7 +31,6 @@ const signUpController = async (req, res) => {
   // Hash password and save in database
   bcrypt.hash(password, 10, async (err, hashedPassword) => {
     if (err) {
-      console.log(err);
       return res.status(400).json("Something went wrong with password");
     }
 

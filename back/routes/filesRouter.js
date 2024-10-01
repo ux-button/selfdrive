@@ -12,5 +12,6 @@ const {
 
 // End-points
 fileRouter.post("/", upload.single("file"), uploadFiledController);
+fileRouter.get("/*", getFilesController);
 
 module.exports = { fileRouter };

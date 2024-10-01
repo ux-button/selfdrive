@@ -7,8 +7,13 @@ const useCheckAuth = () => {
   const [state, dispatch] = useContext(DataContext);
 
   useEffect(() => {
+    if (state.isAuthenticated) {
+      console.log("Short circle");
+    }
+
     const checkAuth = async () => {
       // Request authentication check
+      console.log("Long circle");
       try {
         const response = await axios.get("http://localhost:5123/auth", {
           withCredentials: true,

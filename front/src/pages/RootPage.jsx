@@ -1,51 +1,82 @@
 import axios from "axios";
 import { ItemGrid } from "../components/ItemGrid";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useCheckAuth } from "../hooks/useCheckAuth";
 import { useLocation, Navigate, useNavigate } from "react-router-dom";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
+import { DataContext } from "../Context";
+import { useGetFolders } from "../hooks/useGetFolders";
+import { useGetFiles } from "../hooks/useGetFiles";
 
 const RootPage = () => {
+  const [state, dispatch] = useContext(DataContext);
+
   const navigate = useNavigate();
   const { pathname } = useLocation();
-
-  const fileToUpload = useRef(null);
 
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   // const [path, setPath] = useState(pathname);
-  const [folders, setFolders] = useState();
+
+  // Folders and files
+  //const [folders, setFolders] = useState();
+  //const [files, setFiles] = useState();
+
   const [isFolderCreated, setIsFolderCreated] = useState(false);
 
-  // Folder
+  // New folder input name
   const [folderName, setFolderName] = useState("");
 
-  // File upload
+  // File selected to upload
+  const fileToUpload = useRef(null);
   const [uploadFile, setUploadFile] = useState(null);
 
   useCheckAuth();
 
-  useEffect(() => {
-    setIsFolderCreated(false);
-    console.log("Check folders");
-    const getFolders = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5123/api/folders/${pathname}`,
-          {
-            withCredentials: true,
-          }
-        );
-        setFolders(response.data.folders);
-      } catch (err) {}
-    };
-    getFolders();
-  }, [isFolderCreated, pathname]);
+  const { folders, foldersError } = useGetFolders(pathname);
+  const { files, filesError } = useGetFiles(pathname);
 
+  // useEffect(() => {
+  //   setIsFolderCreated(false);
+  //   console.log("Check folders");
+
+  //   // // Get folders
+  //   // const getFolders = async () => {
+  //   //   try {
+  //   //     const response = await axios.get(
+  //   //       `http://localhost:5123/api/folders/${pathname}`,
+  //   //       {
+  //   //         withCredentials: true,
+  //   //       }
+  //   //     );
+  //   //     setFolders(response.data.folders);
+  //   //   } catch (err) {}
+  //   // };
+
+  //   // Get files
+  //   const getFiles = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `http://localhost:5123/api/files/${pathname}`,
+  //         {
+  //           withCredentials: true,
+  //         }
+  //       );
+  //       setFiles(response.data.files);
+  //     } catch (err) {}
+  //   };
+
+  //   // getFolders();
+  //   getFiles();
+  // }, [isFolderCreated, pathname]);
+
+  // Input handling
   const handleChange = (value) => {
     setFolderName(value);
   };
+
+  // Add folder handling
   const handleSubmitFolder = () => {
     // TO DO check field
     const postFolder = async (folder) => {
@@ -72,6 +103,7 @@ const RootPage = () => {
     navigate(pathname.slice(1) + "/" + name);
   };
 
+  // Handle go back click
   const handleGoBack = () => {
     if (pathname !== "/") {
       let pathSegments = pathname.split("/");
@@ -81,6 +113,12 @@ const RootPage = () => {
     }
   };
 
+  // Open file
+  const handleOpenFile = (name, link, e) => {
+    window.location.href = link;
+  };
+
+  // Open upload system os window
   const handleUploadFile = (event) => {
     setUploadFile(event.target.files[0]);
   };
@@ -89,6 +127,7 @@ const RootPage = () => {
   const handleSendUploadFile = async () => {
     const formData = new FormData();
     formData.append("file", uploadFile);
+    formData.append("pathname", pathname);
 
     if (!uploadFile) {
       return console.log("No file");
@@ -98,16 +137,23 @@ const RootPage = () => {
       const response = await axios.post(
         "http://localhost:5123/api/files",
         formData,
-        { headers: { "Content-Type": "multipart/form-data" } },
-        { withCredentials: true }
+        {
+          withCredentials: true,
+          headers: { "Content-Type": "multipart/form-data" },
+        }
       );
+      return setIsFolderCreated(true);
     } catch (err) {
       console.log("Upload error");
     }
   };
 
-  if (!folders) {
-    //return <div>Loading</div>;
+  if (!state.isAuthenticated) {
+    return <Navigate to="/log-in" />;
+  }
+
+  if (!folders || !files) {
+    return <div>Loading</div>;
   }
 
   return (
@@ -137,7 +183,7 @@ const RootPage = () => {
           Back
         </div>
       ) : null}
-      {/* <div className="grid grid-cols-5">
+      <div className="grid grid-cols-5">
         {folders.map((item) => {
           return (
             <ItemGrid
@@ -149,7 +195,21 @@ const RootPage = () => {
             />
           );
         })}
-      </div> */}
+      </div>
+      <div className="grid grid-cols-5">
+        {files.map((item) => {
+          return (
+            <ItemGrid
+              key={item.id}
+              type="file"
+              name={item.name}
+              size="3.2 Mb"
+              link={item.link}
+              handleClick={handleOpenFile}
+            />
+          );
+        })}
+      </div>
     </>
   );
 };

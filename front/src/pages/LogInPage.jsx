@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
@@ -16,6 +16,8 @@ const LogInPage = () => {
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const navigate = useNavigate();
 
   useCheckAuth();
 
@@ -36,8 +38,10 @@ const LogInPage = () => {
           withCredentials: true,
         }
       );
-      navigate("/");
+      console.log("Axious responded ok");
+      return navigate("/");
     } catch (err) {
+      console.log("Axious responded error");
       setIsError(true);
       setIsLoading(false);
       console.log(err.response.data.error);

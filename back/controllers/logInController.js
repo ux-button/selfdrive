@@ -10,8 +10,8 @@ const logInController = (req, res, next) => {
         .status(401)
         .json({ isAuthenticated: false, error: "Log-in failed. No such user" });
     }
+
     req.logIn(user, (err) => {
-      console.log("Logged in successfull", req.user, user);
       return res.status(200).json({
         isAuthenticated: true,
         user: user.id,
