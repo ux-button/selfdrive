@@ -1,5 +1,5 @@
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+// Load prisma client
+const { prisma } = require("../config/prismaConfig");
 
 const setNewFolderController = (req, res) => {
   const { folder, pathname } = req.body;
