@@ -37,12 +37,12 @@ const deleteFileController = async (req, res) => {
     if (response) {
       deleteFilesAndFoldersInDatabase(fileId, req.user.id)
         .then(async () => {
-          await prisma.$disconnect;
+          await prisma.$disconnect();
           console.log("Successfully deleted from DB");
           return res.status(200).end();
         })
         .catch(async (e) => {
-          await prisma.$disconnect;
+          await prisma.$disconnect();
           console.log("File not deleted from DB", e);
           return res.status(400).json({ error: "File not deleted" });
         });

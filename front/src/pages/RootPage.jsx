@@ -2,7 +2,7 @@ import axios from "axios";
 import { ItemGrid } from "../components/ItemGrid";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useCheckAuth } from "../hooks/useCheckAuth";
-import { useLocation, Navigate, useNavigate } from "react-router-dom";
+import { useLocation, Navigate, useNavigate, Link } from "react-router-dom";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { DataContext } from "../Context";
@@ -17,11 +17,6 @@ const RootPage = () => {
 
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  // const [path, setPath] = useState(pathname);
-
-  // Folders and files
-  //const [folders, setFolders] = useState();
-  //const [files, setFiles] = useState();
 
   const [isFolderCreated, setIsFolderCreated] = useState(false);
 
@@ -36,40 +31,6 @@ const RootPage = () => {
 
   const { folders, foldersError } = useGetFolders(pathname);
   const { files, filesError } = useGetFiles(pathname);
-
-  // useEffect(() => {
-  //   setIsFolderCreated(false);
-  //   console.log("Check folders");
-
-  //   // // Get folders
-  //   // const getFolders = async () => {
-  //   //   try {
-  //   //     const response = await axios.get(
-  //   //       `http://localhost:5123/api/folders/${pathname}`,
-  //   //       {
-  //   //         withCredentials: true,
-  //   //       }
-  //   //     );
-  //   //     setFolders(response.data.folders);
-  //   //   } catch (err) {}
-  //   // };
-
-  //   // Get files
-  //   const getFiles = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `http://localhost:5123/api/files/${pathname}`,
-  //         {
-  //           withCredentials: true,
-  //         }
-  //       );
-  //       setFiles(response.data.files);
-  //     } catch (err) {}
-  //   };
-
-  //   // getFolders();
-  //   getFiles();
-  // }, [isFolderCreated, pathname]);
 
   // Input handling
   const handleChange = (value) => {
@@ -98,11 +59,6 @@ const RootPage = () => {
     postFolder(folderName);
   };
 
-  // Open folder
-  const handleOpenFolder = (name, e) => {
-    navigate(pathname.slice(1) + "/" + name);
-  };
-
   // Handle go back click
   const handleGoBack = () => {
     if (pathname !== "/") {
@@ -111,11 +67,6 @@ const RootPage = () => {
       const backPath = pathSegments.join("/");
       navigate(backPath);
     }
-  };
-
-  // Open file
-  const handleOpenFile = (name, link, e) => {
-    window.location.href = link;
   };
 
   // Open upload system os window
@@ -142,9 +93,50 @@ const RootPage = () => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
+      console.log("Request sent");
       return setIsFolderCreated(true);
     } catch (err) {
       console.log("Upload error");
+    }
+  };
+
+  // Open file
+  const handleOpenFile = (name, link, fileId, e) => {
+    navigate(pathname.slice(1) + `?fileId=${fileId}`);
+  };
+
+  // Open folder
+  const handleOpenFolder = (name, e) => {
+    navigate(pathname.slice(1) + "/" + name);
+  };
+
+  // Handle delete file or folder
+  // TO DO Separate files and folders component
+  const handleDelete = async (name, id, type, e) => {
+    // Delete file case
+    if (type === "file") {
+      try {
+        await axios.post(
+          "http://localhost:5123/api/files/delete",
+          { fileName: name, fileId: id },
+          { withCredentials: true }
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    // Delete folder case
+    if (type === "folder") {
+      try {
+        const response = await axios.post(
+          "http://localhost:5123/api/folders/delete",
+          { id },
+          { withCredentials: true }
+        );
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
@@ -188,10 +180,12 @@ const RootPage = () => {
           return (
             <ItemGrid
               key={item.id}
+              id={item.id}
               type="folder"
               name={item.name}
               size="3.2 Mb"
               handleClick={handleOpenFolder}
+              handleDelete={handleDelete}
             />
           );
         })}
@@ -201,11 +195,13 @@ const RootPage = () => {
           return (
             <ItemGrid
               key={item.id}
+              id={item.id}
               type="file"
               name={item.name}
               size="3.2 Mb"
               link={item.link}
               handleClick={handleOpenFile}
+              handleDelete={handleDelete}
             />
           );
         })}
