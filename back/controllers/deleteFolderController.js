@@ -66,31 +66,25 @@ const deleteFilesFromStorage = async (files) => {
     const deleteFile = new DeleteObjectCommand(params);
     await s3Client.send(deleteFile);
   }
-
-  return true;
 };
 
 // Delete all files from database
 const deleteAllFiles = async (files) => {
   for (const file of files) {
-    await prisma.file.deleteMany({
+    await prisma.file.delete({
       where: { id: file.id },
     });
   }
-
-  return true;
 };
 
 // TO DO Delete all folders form database
 const deleteAllFolders = async (folders) => {
   for (const folder of folders) {
     console.log(folder);
-    await prisma.folder.deleteMany({
+    await prisma.folder.delete({
       where: { id: folder },
     });
   }
-
-  return true;
 };
 
 const deleteFolderController = async (req, res) => {

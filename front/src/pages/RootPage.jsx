@@ -3,11 +3,12 @@ import { ItemGrid } from "../components/ItemGrid";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useCheckAuth } from "../hooks/useCheckAuth";
 import { useLocation, Navigate, useNavigate, Link } from "react-router-dom";
-import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { DataContext } from "../Context";
 import { useGetFolders } from "../hooks/useGetFolders";
 import { useGetFiles } from "../hooks/useGetFiles";
+import { NewFolderModal } from "../components/NewFolderModal";
+import { UploadFileModal } from "../components/UploadFileModal";
 
 const RootPage = () => {
   const [state, dispatch] = useContext(DataContext);
@@ -20,43 +21,30 @@ const RootPage = () => {
 
   const [isFolderCreated, setIsFolderCreated] = useState(false);
 
-  // New folder input name
-  const [folderName, setFolderName] = useState("");
-
-  // File selected to upload
-  const fileToUpload = useRef(null);
-  const [uploadFile, setUploadFile] = useState(null);
-
   useCheckAuth();
 
   const { folders, foldersError } = useGetFolders(pathname);
   const { files, filesError } = useGetFiles(pathname);
 
-  // Input handling
-  const handleChange = (value) => {
-    setFolderName(value);
+  // Modal new folder
+  const [isModalNewFolderOpen, setIsModalNewFolderOpen] = useState(false);
+  const handleOpenModalNewFolder = () => {
+    setIsModalNewFolderOpen(true);
+  };
+  const handleCloseModalNewFolder = (isCreated) => {
+    // TO DO: add change state to folder and file loader
+    isCreated && setIsFolderCreated(true);
+    setIsModalNewFolderOpen(false);
   };
 
-  // Add folder handling
-  const handleSubmitFolder = () => {
-    // TO DO check field
-    const postFolder = async (folder) => {
-      try {
-        await axios.post(
-          "http://localhost:5123/api/folders/",
-          { folder, pathname },
-          {
-            withCredentials: true,
-          }
-        );
-        setFolderName("");
-        setIsFolderCreated(true);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    postFolder(folderName);
+  // Modal upload file
+  const [isModalUploadFileOpen, setIsModalUploadFileOpen] = useState(false);
+  const handleOpenModalUploadFile = () => {
+    setIsModalUploadFileOpen(true);
+  };
+  const handleCloseModalUploadFile = (isCreated) => {
+    // TO DO: add change state to folder and file loader
+    setIsModalUploadFileOpen(false);
   };
 
   // Handle go back click
@@ -66,37 +54,6 @@ const RootPage = () => {
       pathSegments = pathSegments.slice(0, pathSegments.length - 1);
       const backPath = pathSegments.join("/");
       navigate(backPath);
-    }
-  };
-
-  // Open upload system os window
-  const handleUploadFile = (event) => {
-    setUploadFile(event.target.files[0]);
-  };
-
-  // Uploading files logic
-  const handleSendUploadFile = async () => {
-    const formData = new FormData();
-    formData.append("file", uploadFile);
-    formData.append("pathname", pathname);
-
-    if (!uploadFile) {
-      return console.log("No file");
-    }
-
-    try {
-      const response = await axios.post(
-        "http://localhost:5123/api/files",
-        formData,
-        {
-          withCredentials: true,
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
-      console.log("Request sent");
-      return setIsFolderCreated(true);
-    } catch (err) {
-      console.log("Upload error");
     }
   };
 
@@ -150,31 +107,27 @@ const RootPage = () => {
 
   return (
     <>
-      <input
-        type="file"
-        ref={fileToUpload}
-        className="hidden"
-        onChange={handleUploadFile}
+      <NewFolderModal
+        isOpen={isModalNewFolderOpen}
+        handleClose={handleCloseModalNewFolder}
       />
-      <Button handleSubmit={() => fileToUpload.current.click()}>
-        Select file
-      </Button>
-      <Button handleSubmit={handleSendUploadFile}>Upload file</Button>
-      <div className="p-8">
-        <Input
-          value={folderName}
-          label="folder-name"
-          style="default"
-          placeholder="Type name"
-          handleChange={handleChange}
-        />
-        <Button handleSubmit={handleSubmitFolder}>Add folder</Button>
-      </div>
-      {pathname !== "/" ? (
-        <div className="pl-8" onClick={handleGoBack}>
-          Back
+      <UploadFileModal
+        isOpen={isModalUploadFileOpen}
+        handleClose={handleCloseModalUploadFile}
+      />
+      <div className="flex p-8 space-x-4 justify-between">
+        <div className="text-purple-400 cursor-pointer">
+          {pathname !== "/" && <div onClick={handleGoBack}>Back</div>}
         </div>
-      ) : null}
+        <div className="flex space-x-4">
+          <Button type="shadow" handleSubmit={handleOpenModalNewFolder}>
+            Add folder
+          </Button>
+          <Button type="shadow" handleSubmit={handleOpenModalUploadFile}>
+            Upload file
+          </Button>
+        </div>
+      </div>
       <div className="grid grid-cols-5">
         {folders.map((item) => {
           return (
