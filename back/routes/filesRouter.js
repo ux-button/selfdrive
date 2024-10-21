@@ -13,11 +13,14 @@ const { deleteFileController } = require("../controllers/deleteFileController");
 const {
   getSingleFileController,
 } = require("../controllers/getSingleFileController");
+const { shareFileController } = require("../controllers/shareFileController");
 
 // End-points
-fileRouter.post("/", upload.single("file"), uploadFiledController);
 fileRouter.get("/file/:id", getSingleFileController);
 fileRouter.get("/*", getFilesController);
+
+fileRouter.post("/", upload.single("file"), uploadFiledController);
 fileRouter.post("/delete", deleteFileController);
+fileRouter.post("/share", shareFileController);
 
 module.exports = { fileRouter };

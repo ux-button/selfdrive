@@ -1,6 +1,7 @@
 import { FileIcon } from "../assets/FileIcon";
 import { FolderIcon } from "../assets/FolderIcon";
 import { TrashIcon } from "../assets/TrashIcon";
+import { ShareIcon } from "../assets/ShareIcon";
 
 const ItemGrid = ({
   id,
@@ -10,6 +11,7 @@ const ItemGrid = ({
   link,
   handleClick,
   handleDelete,
+  handleShare,
 }) => {
   const iconType = {
     folder: <FolderIcon size="big" />,
@@ -25,12 +27,17 @@ const ItemGrid = ({
       <p className="w-fill text-center text-sm text-zinc-500 select-none">
         {size}
       </p>
-      <div
-        onClick={(e) => handleDelete(name, id, type, e)}
-        className="flex justify-center"
-      >
-        <TrashIcon />
-      </div>
+      <section className="pt-2 flex justify-center space-x-2">
+        <div
+          onClick={(e) => handleDelete(name, id, type, e)}
+          className="flex justify-center"
+        >
+          <TrashIcon />
+        </div>
+        <div onClick={(e) => handleShare(name, id, type, e)}>
+          <ShareIcon />
+        </div>
+      </section>
     </div>
   );
 };

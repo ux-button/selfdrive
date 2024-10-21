@@ -9,6 +9,7 @@ import { useGetFolders } from "../hooks/useGetFolders";
 import { useGetFiles } from "../hooks/useGetFiles";
 import { NewFolderModal } from "../components/NewFolderModal";
 import { UploadFileModal } from "../components/UploadFileModal";
+import { ShareModal } from "../components/ShareModal";
 
 const RootPage = () => {
   const [state, dispatch] = useContext(DataContext);
@@ -45,6 +46,17 @@ const RootPage = () => {
   const handleCloseModalUploadFile = (isCreated) => {
     // TO DO: add change state to folder and file loader
     setIsModalUploadFileOpen(false);
+  };
+
+  // Modal share
+  const [isModalShareOpen, setIsModalShareOpen] = useState(false);
+  const [shareParams, setShareParams] = useState();
+  const handleOpenModalShare = (name, id, type, e) => {
+    setShareParams({ name, id, type, e });
+    setIsModalShareOpen(true);
+  };
+  const handleCloseModalShare = () => {
+    setIsModalShareOpen(false);
   };
 
   // Handle go back click
@@ -115,6 +127,11 @@ const RootPage = () => {
         isOpen={isModalUploadFileOpen}
         handleClose={handleCloseModalUploadFile}
       />
+      <ShareModal
+        isOpen={isModalShareOpen}
+        handleClose={handleCloseModalShare}
+        shareParams={shareParams}
+      />
       <div className="flex p-8 space-x-4 justify-between">
         <div className="text-purple-400 cursor-pointer">
           {pathname !== "/" && <div onClick={handleGoBack}>Back</div>}
@@ -139,6 +156,7 @@ const RootPage = () => {
               size="3.2 Mb"
               handleClick={handleOpenFolder}
               handleDelete={handleDelete}
+              handleShare={handleOpenModalShare}
             />
           );
         })}
@@ -155,6 +173,7 @@ const RootPage = () => {
               link={item.link}
               handleClick={handleOpenFile}
               handleDelete={handleDelete}
+              handleShare={handleOpenModalShare}
             />
           );
         })}

@@ -30,19 +30,21 @@ model User {
 }
 
 model Folder {
-  id      String  @id @default(uuid())
-  name    String
-  root    String?
-  owner   User    @relation(fields: [ownerId], references: [id])
-  ownerId String
+  id        String  @id @default(uuid())
+  name      String
+  root      String?
+  shareLink String?
+  owner     User    @relation(fields: [ownerId], references: [id])
+  ownerId   String
 }
 
 model File {
-  id      String @id @default(uuid())
-  name    String
-  root    String
-  size    Float
-  link    String
-  owner   User   @relation(fields: [ownerId], references: [id])
-  ownerId String
+  id        String  @id @default(uuid())
+  name      String
+  root      String
+  size      Float
+  link      String
+  shareLink String?
+  owner     User    @relation(fields: [ownerId], references: [id])
+  ownerId   String
 }
