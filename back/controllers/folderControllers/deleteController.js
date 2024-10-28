@@ -1,10 +1,10 @@
 const { DeleteObjectCommand } = require("@aws-sdk/client-s3");
 
 // Load prisma client
-const { prisma } = require("../config/prismaConfig");
+const { prisma } = require("../../config/prismaConfig");
 
 // Load S3 configed client
-const { s3Client } = require("../config/s3Config");
+const { s3Client } = require("../../config/s3Config");
 
 // Find all folders path
 const getAllFoldersLinks = async (id) => {
@@ -87,7 +87,7 @@ const deleteAllFolders = async (folders) => {
   }
 };
 
-const deleteFolderController = async (req, res) => {
+const deleteController = async (req, res) => {
   const { id } = req.body;
 
   try {
@@ -111,4 +111,4 @@ const deleteFolderController = async (req, res) => {
   res.status(200).end();
 };
 
-module.exports = { deleteFolderController };
+module.exports = { deleteController };

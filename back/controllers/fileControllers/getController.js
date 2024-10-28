@@ -1,5 +1,5 @@
 // Load prisma client
-const { prisma } = require("../config/prismaConfig");
+const { prisma } = require("../../config/prismaConfig");
 
 // Get files from database
 const getFiles = async (root, ownerId) => {
@@ -11,7 +11,7 @@ const getFiles = async (root, ownerId) => {
 };
 
 // Controller
-const getFilesController = (req, res, next) => {
+const getController = (req, res, next) => {
   // TO DO: Check root existanse first
   const path = req.params;
 
@@ -33,4 +33,4 @@ const getFilesController = (req, res, next) => {
     });
 };
 
-module.exports = { getFilesController };
+module.exports = { getController };

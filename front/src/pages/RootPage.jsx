@@ -10,8 +10,11 @@ import { useGetFiles } from "../hooks/useGetFiles";
 import { NewFolderModal } from "../components/NewFolderModal";
 import { UploadFileModal } from "../components/UploadFileModal";
 import { ShareModal } from "../components/ShareModal";
+import { Toast } from "../components/Toast";
+import { TickIcon } from "../assets/TickIcon";
 
 const RootPage = () => {
+  useCheckAuth();
   const [state, dispatch] = useContext(DataContext);
 
   const navigate = useNavigate();
@@ -22,10 +25,10 @@ const RootPage = () => {
 
   const [isFolderCreated, setIsFolderCreated] = useState(false);
 
-  useCheckAuth();
-
   const { folders, foldersError } = useGetFolders(pathname);
   const { files, filesError } = useGetFiles(pathname);
+
+  const [isChange, setIsChange] = useState(false);
 
   // Modal new folder
   const [isModalNewFolderOpen, setIsModalNewFolderOpen] = useState(false);
@@ -46,6 +49,7 @@ const RootPage = () => {
   const handleCloseModalUploadFile = (isCreated) => {
     // TO DO: add change state to folder and file loader
     setIsModalUploadFileOpen(false);
+    isCreated && setIsToastVisible(true);
   };
 
   // Modal share
@@ -57,6 +61,12 @@ const RootPage = () => {
   };
   const handleCloseModalShare = () => {
     setIsModalShareOpen(false);
+  };
+
+  // Toast
+  const [isToastVisible, setIsToastVisible] = useState(false);
+  const handleToastClose = () => {
+    setIsToastVisible(false);
   };
 
   // Handle go back click
@@ -109,9 +119,9 @@ const RootPage = () => {
     }
   };
 
-  if (!state.isAuthenticated) {
-    return <Navigate to="/log-in" />;
-  }
+  // if (!state.isAuthenticated) {
+  //   return <Navigate to="/log-in" />;
+  // }
 
   if (!folders || !files) {
     return <div>Loading</div>;
@@ -178,6 +188,13 @@ const RootPage = () => {
           );
         })}
       </div>
+      <Toast
+        icon={<TickIcon />}
+        isVisible={isToastVisible}
+        handleClose={handleToastClose}
+      >
+        File uploaded
+      </Toast>
     </>
   );
 };

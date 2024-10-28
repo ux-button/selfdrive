@@ -5,22 +5,36 @@ const fileRouter = Router();
 const { upload } = require("../config/multerConfig");
 
 // Controllers
-const { getFilesController } = require("../controllers/getFilesController");
 const {
-  uploadFiledController,
-} = require("../controllers/uploadFilesController");
-const { deleteFileController } = require("../controllers/deleteFileController");
+  getController,
+} = require("../controllers/fileControllers/getController");
 const {
-  getSingleFileController,
-} = require("../controllers/getSingleFileController");
-const { shareFileController } = require("../controllers/shareFileController");
+  uploadController,
+} = require("../controllers/fileControllers/uploadController");
+const {
+  deleteController,
+} = require("../controllers/fileControllers/deleteController");
+const {
+  getSingleController,
+} = require("../controllers/fileControllers/getSingleController");
+const {
+  setShareLinkController,
+} = require("../controllers/fileControllers/setShareLinkController");
+const {
+  getByShareLinkController,
+} = require("../controllers/fileControllers/getByShareLinkController");
+const {
+  copySharedController,
+} = require("../controllers/fileControllers/copySharedController");
 
 // End-points
-fileRouter.get("/file/:id", getSingleFileController);
-fileRouter.get("/*", getFilesController);
+fileRouter.get("/file/:id", getSingleController);
+fileRouter.get("/share/:shareId", getByShareLinkController);
+fileRouter.get("/*", getController);
 
-fileRouter.post("/", upload.single("file"), uploadFiledController);
-fileRouter.post("/delete", deleteFileController);
-fileRouter.post("/share", shareFileController);
+fileRouter.post("/", upload.single("file"), uploadController);
+fileRouter.post("/delete", deleteController);
+fileRouter.post("/share", setShareLinkController);
+fileRouter.post("/copy", copySharedController);
 
 module.exports = { fileRouter };

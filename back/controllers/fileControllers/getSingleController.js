@@ -1,5 +1,5 @@
 // Prisma config
-const { prisma } = require("../config/prismaConfig");
+const { prisma } = require("../../config/prismaConfig");
 
 // Get file from database by id
 const getFileById = async (id) => {
@@ -8,7 +8,7 @@ const getFileById = async (id) => {
   });
 };
 
-const getSingleFileController = async (req, res) => {
+const getSingleController = async (req, res) => {
   const { id } = req.params;
 
   getFileById(id)
@@ -23,4 +23,4 @@ const getSingleFileController = async (req, res) => {
     });
 };
 
-module.exports = { getSingleFileController };
+module.exports = { getSingleController };

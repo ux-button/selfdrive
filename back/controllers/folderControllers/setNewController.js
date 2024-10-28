@@ -1,7 +1,7 @@
 // Load prisma client
-const { prisma } = require("../config/prismaConfig");
+const { prisma } = require("../../config/prismaConfig");
 
-const setNewFolderController = (req, res) => {
+const setNewController = (req, res) => {
   const { folder, pathname } = req.body;
 
   // Query database
@@ -27,4 +27,4 @@ const setNewFolderController = (req, res) => {
     });
 };
 
-module.exports = { setNewFolderController };
+module.exports = { setNewController };

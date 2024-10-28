@@ -7,6 +7,7 @@ import { NewFolderPage } from "./pages/newFolderPage.jsx";
 import { Context } from "./Context.jsx";
 import "./index.css";
 import { DynamicPage } from "./pages/DynamicPage.jsx";
+import { SharePage } from "./pages/SharePage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: "/new",
     element: <NewFolderPage />,
+  },
+  {
+    path: "/~share/*",
+    element: <SharePage />,
   },
   {
     path: "/*",

@@ -28,16 +28,11 @@ const UploadFileModal = ({ isOpen, handleClose }) => {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:5123/api/files",
-        formData,
-        {
-          withCredentials: true,
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
-      console.log("Request sent");
-      return handleClose();
+      await axios.post("http://localhost:5123/api/files", formData, {
+        withCredentials: true,
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      handleClose(true);
     } catch (err) {
       console.log("Upload error");
     }

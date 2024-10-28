@@ -1,5 +1,5 @@
 // Load prisma client
-const { prisma } = require("../config/prismaConfig");
+const { prisma } = require("../../config/prismaConfig");
 
 // Get folders frm database
 const getFoldersByFolder = async (root, user) => {

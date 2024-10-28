@@ -1,10 +1,10 @@
 const { Upload } = require("@aws-sdk/lib-storage");
 
 // Load prisma client
-const { prisma } = require("../config/prismaConfig");
+const { prisma } = require("../../config/prismaConfig");
 
 // Load S3 config
-const { s3Client } = require("../config/s3Config");
+const { s3Client } = require("../../config/s3Config");
 
 // Configure prisma save link to db
 const setFileToDatabase = async (name, root, size, link, ownerId) => {
@@ -19,7 +19,7 @@ const setFileToDatabase = async (name, root, size, link, ownerId) => {
   });
 };
 
-const uploadFiledController = async (req, res) => {
+const uploadController = async (req, res) => {
   // Take path from json body appended to formData
   const rootPath = req.body.pathname;
 
@@ -64,4 +64,4 @@ const uploadFiledController = async (req, res) => {
     });
 };
 
-module.exports = { uploadFiledController };
+module.exports = { uploadController };

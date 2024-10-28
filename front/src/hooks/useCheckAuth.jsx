@@ -1,6 +1,6 @@
 import axios from "axios";
 import { DataContext } from "../Context";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 
 // TO DO here is render error while authenticate
 const useCheckAuth = () => {

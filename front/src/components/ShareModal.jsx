@@ -6,8 +6,8 @@ import { useEffect, useState } from "react";
 import { FolderIcon } from "../assets/FolderIcon";
 import { FileIcon } from "../assets/FileIcon";
 
-// PROBLEM load with useEffect
-const ShareModal = ({ isOpen, handleClose, shareParams, handleCopy }) => {
+// TO DO optimise load with useEffect
+const ShareModal = ({ isOpen, handleClose, shareParams }) => {
   const [shareLink, setShareLink] = useState("Loading...");
 
   useEffect(() => {
@@ -28,13 +28,22 @@ const ShareModal = ({ isOpen, handleClose, shareParams, handleCopy }) => {
       }
     };
 
+    // When opening
     if (isOpen) {
       getShareFileLink(shareParams.id);
     }
+    // When closing
     if (!isOpen) {
       setShareLink("Loading...");
     }
   }, [isOpen]);
+
+  const handleCopy = () => {
+    navigator.clipboard
+      .writeText(shareLink)
+      .then(() => console.log("Link copied"))
+      .catch(() => console.log("Something went wrong"));
+  };
 
   if (!isOpen) {
     return;
@@ -44,19 +53,21 @@ const ShareModal = ({ isOpen, handleClose, shareParams, handleCopy }) => {
     <div className="w-screen h-screen absolute top-0 left-0 flex justify-center bg-slate-500 bg-opacity-40 items-center">
       <div className="w-80 py-8 px-6 rounded-xl bg-slate-50 text-3xl space-y-4 absolute">
         <h2>Share {shareParams.type}</h2>
-        <div className="flex space-x-2">
-          {shareParams.type === "folder" ? <FolderIcon /> : <FileIcon />}
-          <p className="text-base">{shareParams.name}</p>
-        </div>
-        <div className="bg-slate-100 rounded-xl flex justify-between p-4">
-          <p className="text-slate-500 text-base truncate">{shareLink}</p>
+        <section className="flex space-x-2">
           <div>
+            {shareParams.type === "folder" ? <FolderIcon /> : <FileIcon />}
+          </div>
+          <p className="text-base">{shareParams.name}</p>
+        </section>
+        <section className="bg-slate-100 rounded-xl flex justify-between p-4">
+          <p className="text-slate-500 text-base truncate">{shareLink}</p>
+          <div onClick={handleCopy}>
             <CopyIcon />
           </div>
-        </div>
-        <div className="flex space-x-2" onClick={handleClose}>
+        </section>
+        <section className="flex space-x-2" onClick={handleClose}>
           <Button>Close</Button>
-        </div>
+        </section>
       </div>
     </div>
   );

@@ -2,17 +2,19 @@ const { Router } = require("express");
 const folderRouter = Router();
 
 // Controllers
-const { getFolders } = require("../controllers/getFoldersController");
 const {
-  setNewFolderController,
-} = require("../controllers/setNewFolderController");
+  getFolders,
+} = require("../controllers/folderControllers/getController");
 const {
-  deleteFolderController,
-} = require("../controllers/deleteFolderController");
+  setNewController,
+} = require("../controllers/folderControllers/setNewController");
+const {
+  deleteController,
+} = require("../controllers/folderControllers/deleteController");
 
 // Endpoints
-folderRouter.post("/", setNewFolderController);
+folderRouter.post("/", setNewController);
 folderRouter.get("/*", getFolders);
-folderRouter.post("/delete", deleteFolderController);
+folderRouter.post("/delete", deleteController);
 
 module.exports = { folderRouter };

@@ -1,10 +1,10 @@
 const { DeleteObjectCommand } = require("@aws-sdk/client-s3");
 
 // Load prisma client
-const { prisma } = require("../config/prismaConfig");
+const { prisma } = require("../../config/prismaConfig");
 
 // Load S3 configed client
-const { s3Client } = require("../config/s3Config");
+const { s3Client } = require("../../config/s3Config");
 
 // Delete file from database
 const deleteFilesAndFoldersInDatabase = async (id, ownerId) => {
@@ -16,7 +16,7 @@ const deleteFilesAndFoldersInDatabase = async (id, ownerId) => {
   });
 };
 
-const deleteFileController = async (req, res) => {
+const deleteController = async (req, res) => {
   // Take path from json body
   const { fileName, fileId } = req.body;
 
@@ -53,4 +53,4 @@ const deleteFileController = async (req, res) => {
   }
 };
 
-module.exports = { deleteFileController };
+module.exports = { deleteController };
