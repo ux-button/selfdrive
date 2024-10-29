@@ -13,8 +13,13 @@ import { ShareModal } from "../components/ShareModal";
 import { Toast } from "../components/Toast";
 import { TickIcon } from "../assets/TickIcon";
 
+import { useShareModal } from "../controllers/useShareModal";
+import { useNewFolderModal } from "../controllers/useNewFolderModal";
+import { useUploadModal } from "../controllers/useUploadModal";
+import { useDelete } from "../controllers/useDelete";
+import { useToast } from "../controllers/useToast";
+
 const RootPage = () => {
-  useCheckAuth();
   const [state, dispatch] = useContext(DataContext);
 
   const navigate = useNavigate();
@@ -23,51 +28,23 @@ const RootPage = () => {
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [isFolderCreated, setIsFolderCreated] = useState(false);
+  // Check authenticated hook
+  useCheckAuth();
 
+  // Files and folders hook
   const { folders, foldersError } = useGetFolders(pathname);
   const { files, filesError } = useGetFiles(pathname);
 
-  const [isChange, setIsChange] = useState(false);
+  // Modal hooks
+  const shareModal = useShareModal();
+  const newFolderModal = useNewFolderModal();
+  const uploadModal = useUploadModal();
 
-  // Modal new folder
-  const [isModalNewFolderOpen, setIsModalNewFolderOpen] = useState(false);
-  const handleOpenModalNewFolder = () => {
-    setIsModalNewFolderOpen(true);
-  };
-  const handleCloseModalNewFolder = (isCreated) => {
-    // TO DO: add change state to folder and file loader
-    isCreated && setIsFolderCreated(true);
-    setIsModalNewFolderOpen(false);
-  };
+  // Toast hooks
+  const uploadToast = useToast();
 
-  // Modal upload file
-  const [isModalUploadFileOpen, setIsModalUploadFileOpen] = useState(false);
-  const handleOpenModalUploadFile = () => {
-    setIsModalUploadFileOpen(true);
-  };
-  const handleCloseModalUploadFile = (isCreated) => {
-    // TO DO: add change state to folder and file loader
-    setIsModalUploadFileOpen(false);
-    isCreated && setIsToastVisible(true);
-  };
-
-  // Modal share
-  const [isModalShareOpen, setIsModalShareOpen] = useState(false);
-  const [shareParams, setShareParams] = useState();
-  const handleOpenModalShare = (name, id, type, e) => {
-    setShareParams({ name, id, type, e });
-    setIsModalShareOpen(true);
-  };
-  const handleCloseModalShare = () => {
-    setIsModalShareOpen(false);
-  };
-
-  // Toast
-  const [isToastVisible, setIsToastVisible] = useState(false);
-  const handleToastClose = () => {
-    setIsToastVisible(false);
-  };
+  // Controller hooks
+  const { handleDelete } = useDelete();
 
   // Handle go back click
   const handleGoBack = () => {
@@ -89,36 +66,6 @@ const RootPage = () => {
     navigate(pathname.slice(1) + "/" + name);
   };
 
-  // Handle delete file or folder
-  // TO DO Separate files and folders component
-  const handleDelete = async (name, id, type, e) => {
-    // Delete file case
-    if (type === "file") {
-      try {
-        await axios.post(
-          "http://localhost:5123/api/files/delete",
-          { fileName: name, fileId: id },
-          { withCredentials: true }
-        );
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
-    // Delete folder case
-    if (type === "folder") {
-      try {
-        const response = await axios.post(
-          "http://localhost:5123/api/folders/delete",
-          { id },
-          { withCredentials: true }
-        );
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  };
-
   // if (!state.isAuthenticated) {
   //   return <Navigate to="/log-in" />;
   // }
@@ -130,27 +77,27 @@ const RootPage = () => {
   return (
     <>
       <NewFolderModal
-        isOpen={isModalNewFolderOpen}
-        handleClose={handleCloseModalNewFolder}
+        isOpen={newFolderModal.isOpen}
+        handleClose={newFolderModal.handleClose}
       />
       <UploadFileModal
-        isOpen={isModalUploadFileOpen}
-        handleClose={handleCloseModalUploadFile}
+        isOpen={uploadModal.isOpen}
+        handleClose={uploadModal.hanldeClose}
       />
       <ShareModal
-        isOpen={isModalShareOpen}
-        handleClose={handleCloseModalShare}
-        shareParams={shareParams}
+        isOpen={shareModal.isOpen}
+        handleClose={shareModal.handleClose}
+        shareParams={shareModal.params}
       />
       <div className="flex p-8 space-x-4 justify-between">
         <div className="text-purple-400 cursor-pointer">
           {pathname !== "/" && <div onClick={handleGoBack}>Back</div>}
         </div>
         <div className="flex space-x-4">
-          <Button type="shadow" handleSubmit={handleOpenModalNewFolder}>
+          <Button type="shadow" handleSubmit={newFolderModal.hanldeOpen}>
             Add folder
           </Button>
-          <Button type="shadow" handleSubmit={handleOpenModalUploadFile}>
+          <Button type="shadow" handleSubmit={uploadModal.handleOpen}>
             Upload file
           </Button>
         </div>
@@ -166,7 +113,7 @@ const RootPage = () => {
               size="3.2 Mb"
               handleClick={handleOpenFolder}
               handleDelete={handleDelete}
-              handleShare={handleOpenModalShare}
+              handleShare={shareModal.handleOpen}
             />
           );
         })}
@@ -183,15 +130,15 @@ const RootPage = () => {
               link={item.link}
               handleClick={handleOpenFile}
               handleDelete={handleDelete}
-              handleShare={handleOpenModalShare}
+              handleShare={shareModal.handleOpen}
             />
           );
         })}
       </div>
       <Toast
         icon={<TickIcon />}
-        isVisible={isToastVisible}
-        handleClose={handleToastClose}
+        isVisible={uploadToast.isOpen}
+        handleClose={uploadToast.hanldeClose}
       >
         File uploaded
       </Toast>
