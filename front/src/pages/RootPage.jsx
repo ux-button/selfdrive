@@ -20,10 +20,12 @@ import { useDelete } from "../controllers/useDelete";
 import { useToast } from "../controllers/useToast";
 
 const RootPage = () => {
-  const [state, dispatch] = useContext(DataContext);
-
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const [state, dispatch] = useContext(DataContext);
+
+  // Toast type and text
+  const [toastType, setToastType] = useState({ type: "", message: "" });
 
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -35,13 +37,13 @@ const RootPage = () => {
   const { folders, foldersError } = useGetFolders(pathname);
   const { files, filesError } = useGetFiles(pathname);
 
+  // Toast hooks
+  const toast = useToast(toastType, setToastType);
+
   // Modal hooks
   const shareModal = useShareModal();
-  const newFolderModal = useNewFolderModal();
-  const uploadModal = useUploadModal();
-
-  // Toast hooks
-  const uploadToast = useToast();
+  const newFolderModal = useNewFolderModal(toast, toastType, setToastType);
+  const uploadModal = useUploadModal(toast, toastType, setToastType);
 
   // Controller hooks
   const { handleDelete } = useDelete();
@@ -83,6 +85,10 @@ const RootPage = () => {
       <UploadFileModal
         isOpen={uploadModal.isOpen}
         handleClose={uploadModal.hanldeClose}
+        handleUploadFile={uploadModal.handleUploadFile}
+        handleSendUploadFile={uploadModal.handleSendUploadFile}
+        handleRelease={uploadModal.handleRelease}
+        uploadFile={uploadModal.uploadFile}
       />
       <ShareModal
         isOpen={shareModal.isOpen}
@@ -136,11 +142,11 @@ const RootPage = () => {
         })}
       </div>
       <Toast
-        icon={<TickIcon />}
-        isVisible={uploadToast.isOpen}
-        handleClose={uploadToast.hanldeClose}
+        type={toastType.type}
+        isVisible={toast.isOpen}
+        handleClose={toast.hanldeClose}
       >
-        File uploaded
+        {toastType.message}
       </Toast>
     </>
   );

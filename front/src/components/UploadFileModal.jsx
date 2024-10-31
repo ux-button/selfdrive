@@ -1,48 +1,16 @@
-import axios from "axios";
-import { useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
 import { Button } from "./Button";
+import { useRef } from "react";
 
-const UploadFileModal = ({ isOpen, handleClose }) => {
-  const [uploadFile, setUploadFile] = useState(null);
-
+const UploadFileModal = ({
+  isOpen,
+  handleClose,
+  handleUploadFile,
+  handleSendUploadFile,
+  handleRelease,
+  uploadFile,
+}) => {
   // File selected to upload
   const fileToUpload = useRef(null);
-
-  // Pathname
-  const { pathname } = useLocation();
-
-  // Open upload system os window
-  const handleUploadFile = (event) => {
-    setUploadFile(event.target.files[0]);
-  };
-
-  // Uploading files logic
-  const handleSendUploadFile = async () => {
-    const formData = new FormData();
-    formData.append("file", uploadFile);
-    formData.append("pathname", pathname);
-
-    if (!uploadFile) {
-      return console.log("No file");
-    }
-
-    try {
-      await axios.post("http://localhost:5123/api/files", formData, {
-        withCredentials: true,
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      handleClose(true);
-    } catch (err) {
-      console.log("Upload error");
-    }
-  };
-
-  // Release file when close
-  const handleRelease = () => {
-    setUploadFile(null);
-    handleClose();
-  };
 
   if (!isOpen) {
     return;

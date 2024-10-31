@@ -1,6 +1,14 @@
 import { useEffect } from "react";
+import { TickIcon } from "../assets/TickIcon";
+import { CrossIcon } from "../assets/CrossIcon";
 
-const Toast = ({ icon, isVisible, handleClose, children }) => {
+// TO DO: Add here full toast and hook logic to call it inside modal
+const Toast = ({ type, isVisible, handleClose, children }) => {
+  const toastType = {
+    success: <TickIcon />,
+    error: <CrossIcon />,
+  };
+
   useEffect(() => {
     if (isVisible) {
       const timer = setTimeout(handleClose, 3000);
@@ -15,7 +23,7 @@ const Toast = ({ icon, isVisible, handleClose, children }) => {
       }`}
     >
       <div className="flex bg-slate-900 w-fit pl-4 pr-5 py-2 space-x-2 rounded-full">
-        <div className="py-1">{icon}</div>
+        <div className="py-1">{toastType[type]}</div>
         <div className="text-white">{children}</div>
       </div>
     </div>

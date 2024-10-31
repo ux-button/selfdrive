@@ -7,3 +7,5 @@
    in storage without a chance to crack with brootforced requiest
 
 3. Fix reseting to root folder after every reload
+
+4. Fix russian language by transcribting it
