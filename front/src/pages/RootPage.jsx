@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ItemGrid } from "../components/ItemGrid";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCheckAuth } from "../hooks/useCheckAuth";
 import { useLocation, Navigate, useNavigate, Link } from "react-router-dom";
 import { Button } from "../components/Button";
@@ -11,18 +11,18 @@ import { NewFolderModal } from "../components/NewFolderModal";
 import { UploadFileModal } from "../components/UploadFileModal";
 import { ShareModal } from "../components/ShareModal";
 import { Toast } from "../components/Toast";
-import { TickIcon } from "../assets/TickIcon";
 
 import { useShareModal } from "../controllers/useShareModal";
 import { useNewFolderModal } from "../controllers/useNewFolderModal";
 import { useUploadModal } from "../controllers/useUploadModal";
 import { useDelete } from "../controllers/useDelete";
 import { useToast } from "../controllers/useToast";
+import { useLogout } from "../controllers/useLogout";
+import { useAuth } from "../hooks/useAuth";
 
 const RootPage = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const [state, dispatch] = useContext(DataContext);
 
   // Toast type and text
   const [toastType, setToastType] = useState({ type: "", message: "" });
@@ -41,12 +41,13 @@ const RootPage = () => {
   const toast = useToast(toastType, setToastType);
 
   // Modal hooks
-  const shareModal = useShareModal();
+  const shareModal = useShareModal(toast, toastType, setToastType);
   const newFolderModal = useNewFolderModal(toast, toastType, setToastType);
   const uploadModal = useUploadModal(toast, toastType, setToastType);
 
   // Controller hooks
   const { handleDelete } = useDelete();
+  const { handleLogout } = useLogout();
 
   // Handle go back click
   const handleGoBack = () => {
@@ -106,6 +107,9 @@ const RootPage = () => {
           <Button type="shadow" handleSubmit={uploadModal.handleOpen}>
             Upload file
           </Button>
+          <div className="cursor-pointer" onClick={handleLogout}>
+            Logout
+          </div>
         </div>
       </div>
       <div className="grid grid-cols-5">

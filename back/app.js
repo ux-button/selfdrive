@@ -16,6 +16,7 @@ const corsOptions = require("./config/corsConfig");
 const { signUpController } = require("./controllers/signUpController");
 const { logInController } = require("./controllers/logInController");
 const { checkAuth } = require("./controllers/authCheck");
+const { logoutController } = require("./controllers/logoutController");
 
 // Routers
 const { folderRouter } = require("./routes/folderRouter");
@@ -50,6 +51,7 @@ app.use("/api/files", fileRouter);
 // End-points
 app.post("/log-in", logInController);
 app.post("/sign-up", signUpController);
+app.get("/log-out", logoutController);
 app.get("/auth", checkAuth);
 
 // Server running

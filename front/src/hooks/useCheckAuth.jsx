@@ -1,38 +1,21 @@
 import axios from "axios";
-import { DataContext } from "../Context";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 // TO DO here is render error while authenticate
 const useCheckAuth = () => {
-  const [state, dispatch] = useContext(DataContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (state.isAuthenticated) {
-      console.log("Short circle");
-    }
-
     const checkAuth = async () => {
       // Request authentication check
       console.log("Long circle");
       try {
-        const response = await axios.get("http://localhost:5123/auth", {
+        await axios.get("http://localhost:5123/auth", {
           withCredentials: true,
         });
-
-        // Authenticate in reducer
-        dispatch({
-          type: "authorize",
-          payload: {
-            isAuthenticated: true,
-            user: response.data.user.id,
-            username: response.data.user.username,
-          },
-        });
       } catch (err) {
-        // Log-out in reducer
-        dispatch({
-          type: "unauthorize",
-        });
+        navigate("/log-in");
       }
     };
 
