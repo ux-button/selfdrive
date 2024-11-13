@@ -18,7 +18,6 @@ import { useUploadModal } from "../controllers/useUploadModal";
 import { useDelete } from "../controllers/useDelete";
 import { useToast } from "../controllers/useToast";
 import { useLogout } from "../controllers/useLogout";
-import { useAuth } from "../hooks/useAuth";
 
 const RootPage = () => {
   const navigate = useNavigate();
