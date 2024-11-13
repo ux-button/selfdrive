@@ -12,8 +12,12 @@ const {
   deleteController,
 } = require("../controllers/folderControllers/deleteController");
 
+// Validators
+const { validatePath } = require("../validators/rootPathValidator");
+const { validateFolder } = require("../validators/folderExistanceValidator");
+
 // Endpoints
-folderRouter.post("/", setNewController);
+folderRouter.post("/", validatePath, validateFolder, setNewController);
 folderRouter.get("/*", getFolders);
 folderRouter.post("/delete", deleteController);
 
