@@ -28,12 +28,34 @@ const SingleFilePage = () => {
     return <div>Loading</div>;
   }
 
+  console.log(file);
+
+  console.log(file.data.link);
+  console.log(file.data.id);
+
   return (
     <>
-      <div>{file.data.id}</div>
-      <div>{file.data.link}</div>
-      <div>{file.data.name}</div>
-      <div>{file.data.size}</div>
+      {file.data.link.toLowerCase().endsWith(".png") && (
+        <div className="flex justify-center p-10">
+          <img className="h-[400px]" src={file.data.link} />
+        </div>
+      )}
+      {file.data.link.toLowerCase().endsWith(".jpg") && (
+        <div className="flex justify-center p-10">
+          <img className="h-[400px]" src={file.data.link} />
+        </div>
+      )}
+      {file.data.link.toLowerCase().endsWith(".jpeg") && (
+        <div className="flex justify-center p-10">
+          <img className="h-[400px]" src={file.data.link} />
+        </div>
+      )}
+      <div className="flex justify-center">
+        <h1 className="text-3xl">{file.data.name}</h1>
+      </div>
+      <div className="flex justify-center">
+        <p className="text-base text-slate-500">{file.data.size}</p>
+      </div>
     </>
   );
 };

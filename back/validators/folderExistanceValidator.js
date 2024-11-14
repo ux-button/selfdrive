@@ -1,4 +1,4 @@
-const { body, checkSchema } = require("express-validator");
+const { body } = require("express-validator");
 const { prisma } = require("../config/prismaConfig");
 
 // Check if folder already exist
@@ -14,15 +14,16 @@ const checkFolderExistance = async (path, folder, user) => {
   }
 };
 
+// Validator for folder name
 const validateFolder = body("folder")
   .escape()
   .custom(async (value, { req }) => {
     // Check if folder name has special words
     if (value.includes("~share")) {
-      throw new Error("Unavailable name");
+      throw new Error("Unavailable folder name");
     }
 
-    // Unescape after alter
+    // Unescape after validator .escape()
     const altered = req.body.pathname.replace("&#x2F;", "/");
 
     // Check if folder already exist

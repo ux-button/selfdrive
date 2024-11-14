@@ -18,7 +18,7 @@ const checkUserPath = async (path, user) => {
 const validatePath = body("pathname")
   .escape()
   .custom(async (value, { req }) => {
-    // Unescape after alter
+    // Unescape after validator .escape()
     const altered = value.replace("&#x2F;", "/");
 
     // Validate
