@@ -9,7 +9,7 @@ const useGetFolders = (pathname) => {
     const getFolders = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5123/api/folders/${pathname}`,
+          `https://storageapp-krmz.onrender.com/api/folders/${pathname}`,
           {
             withCredentials: true,
           }

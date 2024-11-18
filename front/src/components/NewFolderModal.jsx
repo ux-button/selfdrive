@@ -23,7 +23,7 @@ const NewFolderModal = ({ isOpen, handleClose }) => {
     const postFolder = async (folder) => {
       try {
         await axios.post(
-          "http://localhost:5123/api/folders/",
+          "https://storageapp-krmz.onrender.com/api/folders/",
           { folder, pathname },
           {
             withCredentials: true,

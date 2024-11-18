@@ -10,7 +10,7 @@ const useCheckAuth = () => {
     const checkAuth = async () => {
       // Request authentication check
       try {
-        await axios.get("http://localhost:5123/auth", {
+        await axios.get("https://storageapp-krmz.onrender.com/auth", {
           withCredentials: true,
         });
       } catch (err) {

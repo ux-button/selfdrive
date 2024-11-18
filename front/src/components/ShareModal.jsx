@@ -7,21 +7,26 @@ import { FolderIcon } from "../assets/FolderIcon";
 import { FileIcon } from "../assets/FileIcon";
 
 // TO DO optimise load with useEffect
-const ShareModal = ({ isOpen, handleClose, shareParams }) => {
+const ShareModal = ({
+  isOpen,
+  handleClose,
+  shareParams,
+  toast,
+  toastType,
+  setToastType,
+}) => {
   const [shareLink, setShareLink] = useState("Loading...");
 
   useEffect(() => {
     const getShareFileLink = async (id) => {
       try {
-        console.log("start sending requiest");
         const result = await axios.post(
-          "http://localhost:5123/api/files/share",
+          "https://storageapp-krmz.onrender.com/api/files/share",
           {
             fileId: id,
           },
           { withCredentials: true }
         );
-        console.log(result);
         setShareLink(result.data.shareLink);
       } catch (err) {
         setShareLink("Error");
@@ -41,7 +46,14 @@ const ShareModal = ({ isOpen, handleClose, shareParams }) => {
   const handleCopy = () => {
     navigator.clipboard
       .writeText(shareLink)
-      .then(() => console.log("Link copied"))
+      .then(() => {
+        toast.handleOpen();
+        setToastType({
+          ...toastType,
+          type: "success",
+          message: "Link copied",
+        });
+      })
       .catch(() => console.log("Something went wrong"));
   };
 

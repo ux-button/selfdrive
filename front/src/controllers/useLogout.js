@@ -6,7 +6,7 @@ const useLogout = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.get("http://localhost:5123/log-out", {
+      await axios.get("https://storageapp-krmz.onrender.com/log-out", {
         withCredentials: true,
       });
       navigate("/log-in");

@@ -7,6 +7,7 @@ const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const { PrismaClient } = require("@prisma/client");
 
 const app = express();
+const port = process.env.PORT || 4000;
 
 // Configs
 const passport = require("./config/passportConfig");
@@ -55,4 +56,4 @@ app.get("/log-out", logoutController);
 app.get("/auth", checkAuth);
 
 // Server running
-app.listen(5123, () => console.log("Server running on port 5123..."));
+app.listen(port, () => console.log("Server running on port 5123..."));

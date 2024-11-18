@@ -9,14 +9,14 @@ const useGetAllItems = (pathname, toastType) => {
       try {
         // Load all files
         const filesData = await axios.get(
-          `http://localhost:5123/api/files/${pathname}`,
+          `https://storageapp-krmz.onrender.com/api/files/${pathname}`,
           {
             withCredentials: true,
           }
         );
         // Load all folders
         const foldersData = await axios.get(
-          `http://localhost:5123/api/folders/${pathname}`,
+          `https://storageapp-krmz.onrender.com/api/folders/${pathname}`,
           {
             withCredentials: true,
           }

@@ -1,3 +1,4 @@
+import { FileIcon } from "../assets/FileIcon";
 import { Button } from "./Button";
 import { useRef } from "react";
 
@@ -26,6 +27,14 @@ const UploadFileModal = ({
           onChange={handleUploadFile}
         />
         <h2>Upload file</h2>
+        <div>
+          {uploadFile && (
+            <div className="flex space-x-2">
+              <FileIcon />
+              <p className="text-base">{uploadFile.name}</p>
+            </div>
+          )}
+        </div>
         <div className="flex space-x-2">
           {uploadFile ? (
             <Button handleSubmit={handleSendUploadFile}>Upload file</Button>

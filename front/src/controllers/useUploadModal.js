@@ -52,10 +52,14 @@ const useUploadModal = (toast, toastType, setToastType) => {
     }
 
     try {
-      await axios.post("http://localhost:5123/api/files", formData, {
-        withCredentials: true,
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      await axios.post(
+        "https://storageapp-krmz.onrender.com/api/files",
+        formData,
+        {
+          withCredentials: true,
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
       hanldeClose(true);
     } catch (err) {
       console.log("Upload error");

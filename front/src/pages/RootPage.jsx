@@ -38,7 +38,7 @@ const RootPage = () => {
   const uploadModal = useUploadModal(toast, toastType, setToastType);
 
   // Controller hooks
-  const { handleDelete } = useDelete();
+  const { handleDelete } = useDelete(toast, toastType, setToastType);
   const { handleLogout } = useLogout();
 
   // Handle go back click
@@ -83,6 +83,9 @@ const RootPage = () => {
         isOpen={shareModal.isOpen}
         handleClose={shareModal.handleClose}
         shareParams={shareModal.params}
+        toast={toast}
+        toastType={toastType}
+        setToastType={setToastType}
       />
       <div className="flex p-8 space-x-4 justify-between">
         <div className="text-purple-800 cursor-pointer">

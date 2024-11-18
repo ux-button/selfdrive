@@ -22,7 +22,7 @@ const SharePage = () => {
         const shareFileId = pathname.match(/(?<=share\/file\/).*/)[0];
         try {
           const { data } = await axios.get(
-            `http://localhost:5123/api/files/share/${shareFileId}`,
+            `https://storageapp-krmz.onrender.com/api/files/share/${shareFileId}`,
             { withCredentials: true }
           );
           setSharedType("file");
@@ -41,7 +41,7 @@ const SharePage = () => {
   const handleCopyFile = async () => {
     try {
       await axios.post(
-        "http://localhost:5123/api/files/copy",
+        "https://storageapp-krmz.onrender.com/api/files/copy",
         {
           fileName: sharedData.name,
           fileSize: sharedData.size,

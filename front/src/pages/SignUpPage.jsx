@@ -36,7 +36,7 @@ const SignUpPage = () => {
     setIsError(false);
 
     try {
-      await axios.post("http://localhost:5123/sign-up", {
+      await axios.post("https://storageapp-krmz.onrender.com/sign-up", {
         username,
         password,
       });

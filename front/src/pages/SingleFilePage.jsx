@@ -13,7 +13,7 @@ const SingleFilePage = () => {
     const getFile = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5123/api/files/file/${fileId}`,
+          `https://storageapp-krmz.onrender.com/api/files/file/${fileId}`,
           { withCredentials: true }
         );
         console.log(response);
