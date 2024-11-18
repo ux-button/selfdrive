@@ -1,12 +1,7 @@
-import axios from "axios";
-import { ItemGrid } from "../components/ItemGrid";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useCheckAuth } from "../hooks/useCheckAuth";
 import { useLocation, Navigate, useNavigate, Link } from "react-router-dom";
 import { Button } from "../components/Button";
-import { DataContext } from "../Context";
-import { useGetFolders } from "../hooks/useGetFolders";
-import { useGetFiles } from "../hooks/useGetFiles";
 import { NewFolderModal } from "../components/NewFolderModal";
 import { UploadFileModal } from "../components/UploadFileModal";
 import { ShareModal } from "../components/ShareModal";
@@ -18,6 +13,8 @@ import { useUploadModal } from "../controllers/useUploadModal";
 import { useDelete } from "../controllers/useDelete";
 import { useToast } from "../controllers/useToast";
 import { useLogout } from "../controllers/useLogout";
+import { StorageGrid } from "../components/StorageGrid";
+import { useGetAllItems } from "../hooks/useGetAllItems";
 
 const RootPage = () => {
   const navigate = useNavigate();
@@ -26,15 +23,11 @@ const RootPage = () => {
   // Toast type and text
   const [toastType, setToastType] = useState({ type: "", message: "" });
 
-  const [isError, setIsError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-
   // Check authenticated hook
   useCheckAuth();
 
   // Files and folders hook
-  const { folders, foldersError } = useGetFolders(pathname);
-  const { files, filesError } = useGetFiles(pathname);
+  const { items } = useGetAllItems(pathname, toastType);
 
   // Toast hooks
   const toast = useToast(toastType, setToastType);
@@ -68,11 +61,7 @@ const RootPage = () => {
     navigate(pathname.slice(1) + "/" + name);
   };
 
-  // if (!state.isAuthenticated) {
-  //   return <Navigate to="/log-in" />;
-  // }
-
-  if (!folders || !files) {
+  if (!items) {
     return <div>Loading</div>;
   }
 
@@ -96,7 +85,7 @@ const RootPage = () => {
         shareParams={shareModal.params}
       />
       <div className="flex p-8 space-x-4 justify-between">
-        <div className="text-purple-400 cursor-pointer">
+        <div className="text-purple-800 cursor-pointer">
           {pathname !== "/" && <div onClick={handleGoBack}>Back</div>}
         </div>
         <div className="flex space-x-4">
@@ -106,43 +95,22 @@ const RootPage = () => {
           <Button type="shadow" handleSubmit={uploadModal.handleOpen}>
             Upload file
           </Button>
-          <div className="cursor-pointer" onClick={handleLogout}>
+          <div
+            className="flex flex-col justify-center text-purple-800  cursor-pointer"
+            onClick={handleLogout}
+          >
             Logout
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-5">
-        {folders.map((item) => {
-          return (
-            <ItemGrid
-              key={item.id}
-              id={item.id}
-              type="folder"
-              name={item.name}
-              size="3.2 Mb"
-              handleClick={handleOpenFolder}
-              handleDelete={handleDelete}
-              handleShare={shareModal.handleOpen}
-            />
-          );
-        })}
-      </div>
-      <div className="grid grid-cols-5">
-        {files.map((item) => {
-          return (
-            <ItemGrid
-              key={item.id}
-              id={item.id}
-              type="file"
-              name={item.name}
-              size="3.2 Mb"
-              link={item.link}
-              handleClick={handleOpenFile}
-              handleDelete={handleDelete}
-              handleShare={shareModal.handleOpen}
-            />
-          );
-        })}
+      <div>
+        <StorageGrid
+          items={items}
+          handleOpenFolder={handleOpenFolder}
+          handleOpenFile={handleOpenFile}
+          handleDelete={handleDelete}
+          shareModal={shareModal}
+        />
       </div>
       <Toast
         type={toastType.type}

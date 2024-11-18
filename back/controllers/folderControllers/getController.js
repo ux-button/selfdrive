@@ -21,8 +21,11 @@ const getFolders = (req, res) => {
   }
 
   getFoldersByFolder(rootFolder, req.user.id)
-    .then(async (folders) => {
+    .then(async (data) => {
       await prisma.$disconnect();
+      const folders = data.map((folder) => {
+        return { ...folder, type: "folder" };
+      });
       return res.status(200).json({ folders });
     })
     .catch(async (e) => {

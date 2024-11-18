@@ -9,7 +9,6 @@ const useCheckAuth = () => {
   useEffect(() => {
     const checkAuth = async () => {
       // Request authentication check
-      console.log("Long circle");
       try {
         await axios.get("http://localhost:5123/auth", {
           withCredentials: true,

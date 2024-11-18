@@ -1,5 +1,6 @@
 // Load prisma client
 const { prisma } = require("../../config/prismaConfig");
+const { getCalculatedSize } = require("../../features/getCalculatedSize");
 
 // Get files from database
 const getFiles = async (root, ownerId) => {
@@ -22,8 +23,11 @@ const getController = (req, res, next) => {
   }
 
   getFiles(rootFolder, req.user.id)
-    .then(async (files) => {
+    .then(async (data) => {
       await prisma.$disconnect();
+      const files = data.map((file) => {
+        return { ...file, size: getCalculatedSize(file.size), type: "file" };
+      });
       return res.status(200).json({ files });
     })
     .catch(async (e) => {
