@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
+import { serverConfig } from "../serverConfig";
+
 const SingleFilePage = () => {
   const [file, setFile] = useState();
 
@@ -13,7 +15,7 @@ const SingleFilePage = () => {
     const getFile = async () => {
       try {
         const response = await axios.get(
-          `https://storageapp-krmz.onrender.com/api/files/file/${fileId}`,
+          `${serverConfig.deploy}/api/files/file/${fileId}`,
           { withCredentials: true }
         );
         console.log(response);

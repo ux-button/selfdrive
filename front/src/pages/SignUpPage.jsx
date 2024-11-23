@@ -7,6 +7,8 @@ import { ErrorMessage } from "../components/ErrorMessage";
 import { DataContext } from "../Context";
 import { useCheckAuth } from "../hooks/useCheckAuth";
 
+import { serverConfig } from "../serverConfig";
+
 const SignUpPage = () => {
   const [state, dispatch] = useContext(DataContext);
 
@@ -36,7 +38,7 @@ const SignUpPage = () => {
     setIsError(false);
 
     try {
-      await axios.post("https://storageapp-krmz.onrender.com/sign-up", {
+      await axios.post(`${serverConfig.deploy}/sign-up`, {
         username,
         password,
       });

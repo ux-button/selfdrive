@@ -16,6 +16,10 @@ const getController = (req, res, next) => {
   // TO DO: Check root existanse first
   const path = req.params;
 
+  if (!user.id) {
+    return res.status(200).end();
+  }
+
   // Replace null and prepare altered path
   let rootFolder = "/";
   if (path[0]) {

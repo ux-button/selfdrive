@@ -6,6 +6,8 @@ import { Button } from "../components/Button";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { useCheckAuth } from "../hooks/useCheckAuth";
 
+import { serverConfig } from "../serverConfig";
+
 const LogInPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -29,16 +31,16 @@ const LogInPage = () => {
   const handleSubmit = async () => {
     try {
       await axios.post(
-        "https://storageapp-krmz.onrender.com/log-in",
+        `${serverConfig.deploy}/log-in`,
         { username, password },
         {
           withCredentials: true,
         }
       );
-      console.log("Axious responded ok");
-      return navigate("/");
+      console.log("Log in accepted by server");
+      return navigate("");
     } catch (err) {
-      console.log("Axious responded error");
+      console.log("Log in denied");
       setIsError(true);
       setIsLoading(false);
       console.log(err.response.data.error);

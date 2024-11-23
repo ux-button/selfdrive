@@ -5,6 +5,8 @@ import { Button } from "./Button";
 import { Input } from "./Input";
 import { useLocation } from "react-router-dom";
 
+import { serverConfig } from "../serverConfig";
+
 const NewFolderModal = ({ isOpen, handleClose }) => {
   const [folderName, setFolderName] = useState("");
 
@@ -23,7 +25,7 @@ const NewFolderModal = ({ isOpen, handleClose }) => {
     const postFolder = async (folder) => {
       try {
         await axios.post(
-          "https://storageapp-krmz.onrender.com/api/folders/",
+          `${serverConfig.deploy}/api/folders/`,
           { folder, pathname },
           {
             withCredentials: true,

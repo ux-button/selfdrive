@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";
 import axios from "axios";
+import { serverConfig } from "../serverConfig";
 
 const NewFolderPage = () => {
   const [isError, setIsError] = useState(false);
@@ -15,7 +16,7 @@ const NewFolderPage = () => {
     const postFolder = async (folder) => {
       try {
         await axios.post(
-          "https://storageapp-krmz.onrender.com/api/folders/",
+          `${serverConfig.deploy}/api/folders/`,
           { folder },
           {
             withCredentials: true,

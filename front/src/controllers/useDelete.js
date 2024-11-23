@@ -1,4 +1,5 @@
 import axios from "axios";
+import { serverConfig } from "../serverConfig";
 
 const useDelete = (toast, toastType, setToastType) => {
   const handleDelete = async (name, id, type, e) => {
@@ -6,7 +7,7 @@ const useDelete = (toast, toastType, setToastType) => {
     if (type === "file") {
       try {
         await axios.post(
-          "https://storageapp-krmz.onrender.com/api/files/delete",
+          `${serverConfig.deploy}/api/files/delete`,
           { fileName: name, fileId: id },
           { withCredentials: true }
         );
@@ -27,7 +28,7 @@ const useDelete = (toast, toastType, setToastType) => {
     if (type === "folder") {
       try {
         await axios.post(
-          "https://storageapp-krmz.onrender.com/api/folders/delete",
+          `${serverConfig.deploy}/api/folders/delete`,
           { id },
           { withCredentials: true }
         );

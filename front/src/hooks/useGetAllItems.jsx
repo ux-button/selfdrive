@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { serverConfig } from "../serverConfig";
 
 const useGetAllItems = (pathname, toastType) => {
   const [items, setItems] = useState();
@@ -9,14 +10,14 @@ const useGetAllItems = (pathname, toastType) => {
       try {
         // Load all files
         const filesData = await axios.get(
-          `https://storageapp-krmz.onrender.com/api/files/${pathname}`,
+          `${serverConfig.deploy}/api/files/${pathname}`,
           {
             withCredentials: true,
           }
         );
         // Load all folders
         const foldersData = await axios.get(
-          `https://storageapp-krmz.onrender.com/api/folders/${pathname}`,
+          `${serverConfig.deploy}/api/folders/${pathname}`,
           {
             withCredentials: true,
           }

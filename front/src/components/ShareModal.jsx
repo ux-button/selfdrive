@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { FolderIcon } from "../assets/FolderIcon";
 import { FileIcon } from "../assets/FileIcon";
 
+import { serverConfig } from "../serverConfig";
+
 // TO DO optimise load with useEffect
 const ShareModal = ({
   isOpen,
@@ -21,7 +23,7 @@ const ShareModal = ({
     const getShareFileLink = async (id) => {
       try {
         const result = await axios.post(
-          "https://storageapp-krmz.onrender.com/api/files/share",
+          `${serverConfig.deploy}/api/files/share`,
           {
             fileId: id,
           },

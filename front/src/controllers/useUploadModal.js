@@ -2,6 +2,8 @@ import axios from "axios";
 import { useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 
+import { serverConfig } from "../serverConfig";
+
 const useUploadModal = (toast, toastType, setToastType) => {
   // Open state of modal
   const [isOpen, setIsOpen] = useState(false);
@@ -52,14 +54,10 @@ const useUploadModal = (toast, toastType, setToastType) => {
     }
 
     try {
-      await axios.post(
-        "https://storageapp-krmz.onrender.com/api/files",
-        formData,
-        {
-          withCredentials: true,
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      await axios.post(`${serverConfig.deploy}/api/files`, formData, {
+        withCredentials: true,
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       hanldeClose(true);
     } catch (err) {
       console.log("Upload error");

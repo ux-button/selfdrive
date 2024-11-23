@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { serverConfig } from "../serverConfig";
 
 const useGetFiles = (pathname) => {
   const [files, setFiles] = useState();
@@ -9,7 +10,7 @@ const useGetFiles = (pathname) => {
     const getFiles = async () => {
       try {
         const response = await axios.get(
-          `https://storageapp-krmz.onrender.com/api/files/${pathname}`,
+          `${serverConfig.deploy}/api/files/${pathname}`,
           {
             withCredentials: true,
           }

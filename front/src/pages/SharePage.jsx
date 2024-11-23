@@ -7,6 +7,8 @@ import { FileIcon } from "../assets/FileIcon";
 import { FolderIcon } from "../assets/FolderIcon";
 import { Button } from "../components/Button";
 
+import { serverConfig } from "../serverConfig";
+
 const SharePage = () => {
   useCheckAuth();
 
@@ -22,7 +24,7 @@ const SharePage = () => {
         const shareFileId = pathname.match(/(?<=share\/file\/).*/)[0];
         try {
           const { data } = await axios.get(
-            `https://storageapp-krmz.onrender.com/api/files/share/${shareFileId}`,
+            `${serverConfig.deploy}/api/files/share/${shareFileId}`,
             { withCredentials: true }
           );
           setSharedType("file");
@@ -41,7 +43,7 @@ const SharePage = () => {
   const handleCopyFile = async () => {
     try {
       await axios.post(
-        "https://storageapp-krmz.onrender.com/api/files/copy",
+        "https://numerous-aretha-starwordy-8f21d73a.koyeb.app/api/files/copy",
         {
           fileName: sharedData.name,
           fileSize: sharedData.size,
