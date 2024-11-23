@@ -38,7 +38,7 @@ const LogInPage = () => {
         }
       );
       console.log("Log in accepted by server");
-      return navigate("");
+      return navigate("/");
     } catch (err) {
       console.log("Log in denied");
       setIsError(true);

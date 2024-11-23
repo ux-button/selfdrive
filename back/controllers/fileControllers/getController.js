@@ -16,7 +16,7 @@ const getController = (req, res, next) => {
   // TO DO: Check root existanse first
   const path = req.params;
 
-  if (!user.id) {
+  if (!req.user.id) {
     return res.status(200).end();
   }
 
