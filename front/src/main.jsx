@@ -4,7 +4,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { SignUpPage } from "./pages/SignUpPage.jsx";
 import { LogInPage } from "./pages/LogInPage.jsx";
 import { NewFolderPage } from "./pages/newFolderPage.jsx";
-import { Context } from "./Context.jsx";
 import "./index.css";
 import { DynamicPage } from "./pages/DynamicPage.jsx";
 import { SharePage } from "./pages/SharePage.jsx";
@@ -33,9 +32,7 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  // <StrictMode>
-  //   <Context>
-  <RouterProvider router={router} />
-  //   </Context>
-  // </StrictMode>
+  <StrictMode>
+    <RouterProvider router={router} />
+  </StrictMode>
 );

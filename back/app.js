@@ -35,7 +35,7 @@ app.use(
     cookie: {
       secure: true, // Cookies will only be sent over HTTPS (for production)
       httpOnly: true, // Prevent JavaScript from accessing cookies
-      sameSite: "none", // Enable cross-origin cookies
+      sameSite: "none", // Enable cross-origin cookies 'lax' for local
       maxAge: 7 * 24 * 60 * 60 * 1000, // ms
     },
     secret: "cats",
