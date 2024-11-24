@@ -23,8 +23,6 @@ const { logoutController } = require("./controllers/logoutController");
 const { folderRouter } = require("./routes/folderRouter");
 const { fileRouter } = require("./routes/filesRouter");
 
-app.set("trust proxy", 1); // Trust the first proxy in front of the app
-
 // Apply middleware
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -37,11 +35,11 @@ app.use(
     },
     secret: "cats",
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: new PrismaSessionStore(new PrismaClient(), {
-      secure: false, // Allow cookies over HTTP for local development
-      httpOnly: true, // Prevent JavaScript access to cookies
-      sameSite: "none", // Allow cross-origin cookies
+      secure: true, // Cookies will only be sent over HTTPS (for production)
+      httpOnly: true, // Prevent JavaScript from accessing cookies
+      sameSite: "none", // Enable cross-origin cookies
       checkPeriod: 2 * 60 * 1000, //ms
       dbRecordIdIsSessionId: true,
       dbRecordIdFunction: undefined,
