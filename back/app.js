@@ -23,6 +23,8 @@ const { logoutController } = require("./controllers/logoutController");
 const { folderRouter } = require("./routes/folderRouter");
 const { fileRouter } = require("./routes/filesRouter");
 
+app.set("trust proxy", 1); // Necessary for secure cookies behind a reverse proxy
+
 // Apply middleware
 app.use(cors(corsOptions));
 app.use(express.json());
