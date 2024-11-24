@@ -30,14 +30,14 @@ const LogInPage = () => {
 
   const handleSubmit = async () => {
     try {
-      await axios.post(
+      const response = await axios.post(
         `${serverConfig.deploy}/log-in`,
         { username, password },
         {
           withCredentials: true,
         }
       );
-      console.log("Log in accepted by server");
+      console.log(response, "Log in accepted by server");
       return navigate("/");
     } catch (err) {
       console.log("Log in denied");

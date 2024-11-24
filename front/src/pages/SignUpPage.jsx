@@ -4,14 +4,10 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/Button";
 import { ErrorMessage } from "../components/ErrorMessage";
-import { DataContext } from "../Context";
-import { useCheckAuth } from "../hooks/useCheckAuth";
 
 import { serverConfig } from "../serverConfig";
 
 const SignUpPage = () => {
-  const [state, dispatch] = useContext(DataContext);
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -21,7 +17,7 @@ const SignUpPage = () => {
 
   const navigate = useNavigate();
 
-  useCheckAuth();
+  console.log("I am loaded");
 
   const handleUsername = (value) => {
     setUsername(value);
@@ -42,7 +38,7 @@ const SignUpPage = () => {
         username,
         password,
       });
-      navigate("/");
+      navigate("/log-in");
     } catch (err) {
       setIsError(true);
       setIsLoading(false);
