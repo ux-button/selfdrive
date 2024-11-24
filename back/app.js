@@ -31,15 +31,15 @@ app.use(express.json());
 app.use(
   session({
     cookie: {
+      secure: true, // Cookies will only be sent over HTTPS (for production)
+      httpOnly: true, // Prevent JavaScript from accessing cookies
+      sameSite: "none", // Enable cross-origin cookies
       maxAge: 7 * 24 * 60 * 60 * 1000, // ms
     },
     secret: "cats",
     resave: false,
     saveUninitialized: false,
     store: new PrismaSessionStore(new PrismaClient(), {
-      secure: true, // Cookies will only be sent over HTTPS (for production)
-      httpOnly: true, // Prevent JavaScript from accessing cookies
-      sameSite: "none", // Enable cross-origin cookies
       checkPeriod: 2 * 60 * 1000, //ms
       dbRecordIdIsSessionId: true,
       dbRecordIdFunction: undefined,
