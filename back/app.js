@@ -33,9 +33,9 @@ app.use(express.json());
 app.use(
   session({
     cookie: {
-      secure: true, // Cookies will only be sent over HTTPS (for production)
+      secure: true, // Cookies will only be sent over HTTPS --- false for local
       httpOnly: true, // Prevent JavaScript from accessing cookies
-      sameSite: "none", // Enable cross-origin cookies 'lax' for local
+      sameSite: "none", // Enable cross-origin cookies --- 'lax' for local
       maxAge: 7 * 24 * 60 * 60 * 1000, // ms
     },
     secret: "cats",
