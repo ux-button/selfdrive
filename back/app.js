@@ -33,6 +33,7 @@ app.use(
     cookie: {
       maxAge: 7 * 24 * 60 * 60 * 1000, // ms
     },
+    secure: true, // for deploy
     secret: "cats",
     resave: false,
     saveUninitialized: false,
