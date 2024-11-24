@@ -37,9 +37,9 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: new PrismaSessionStore(new PrismaClient(), {
-      secure: process.env.NODE_ENV === "production", // Cookies sent only over HTTPS in production
-      sameSite: "strict", // Adjust based on your app’s needs (e.g., 'lax' for external redirects)
-      httpOnly: true, // Prevent JavaScript access to cookies
+      secure: false, // process.env.NODE_ENV === "production", // Cookies sent only over HTTPS in production
+      sameSite: false, // "strict", // Adjust based on your app’s needs (e.g., 'lax' for external redirects)
+      //httpOnly: true, // Prevent JavaScript access to cookies
       checkPeriod: 2 * 60 * 1000, //ms
       dbRecordIdIsSessionId: true,
       dbRecordIdFunction: undefined,
