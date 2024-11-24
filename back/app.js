@@ -33,10 +33,9 @@ app.use(express.json());
 app.use(
   session({
     cookie: {
-      // domain: "https://selfdrive-looty.netlify.app",
-      secure: false, // Cookies will only be sent over HTTPS --- false for local
+      secure: true, // Cookies will only be sent over HTTPS --- false for local
       httpOnly: true, // Prevent JavaScript from accessing cookies
-      sameSite: false, // Enable cross-origin cookies --- 'lax' for local
+      sameSite: "none", // Enable cross-origin cookies --- 'lax' for local
       maxAge: 7 * 24 * 60 * 60 * 1000, // ms
     },
     secret: "cats",
