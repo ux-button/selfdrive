@@ -39,7 +39,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: new PrismaSessionStore(new PrismaClient(), {
-      secure: process.env.NODE_ENV === "production", // for deploy
+      secure: true, // for deploy
       httpOnly: true, // Prevent JavaScript access to cookies
       checkPeriod: 2 * 60 * 1000, //ms
       dbRecordIdIsSessionId: true,
