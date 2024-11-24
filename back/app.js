@@ -35,10 +35,11 @@ app.use(
     },
     secret: "cats",
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     store: new PrismaSessionStore(new PrismaClient(), {
       secure: false, // process.env.NODE_ENV === "production", // Cookies sent only over HTTPS in production
       sameSite: false, // "strict", // Adjust based on your app’s needs (e.g., 'lax' for external redirects)
+      httpOnly: false, // Allow access via JavaScript (for testing only)
       //httpOnly: true, // Prevent JavaScript access to cookies
       checkPeriod: 2 * 60 * 1000, //ms
       dbRecordIdIsSessionId: true,
