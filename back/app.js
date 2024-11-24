@@ -27,17 +27,20 @@ const { fileRouter } = require("./routes/filesRouter");
 app.use(cors(corsOptions));
 app.use(express.json());
 
+app.set("trust proxy", 1); // Trust the first proxy in front of the app
+
 // Initialise session
 app.use(
   session({
     cookie: {
       maxAge: 7 * 24 * 60 * 60 * 1000, // ms
     },
-    secure: true, // for deploy
     secret: "cats",
     resave: false,
     saveUninitialized: false,
     store: new PrismaSessionStore(new PrismaClient(), {
+      secure: process.env.NODE_ENV === "production", // for deploy
+      httpOnly: true, // Prevent JavaScript access to cookies
       checkPeriod: 2 * 60 * 1000, //ms
       dbRecordIdIsSessionId: true,
       dbRecordIdFunction: undefined,
