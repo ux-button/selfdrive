@@ -1,6 +1,6 @@
 [build]
   command = "npm run build"
-  publish = "build"
+  publish = "front/build"
 
 # Rewrite all React routes to index.html
 [[redirects]]
